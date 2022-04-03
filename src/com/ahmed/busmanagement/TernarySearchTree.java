@@ -1,17 +1,21 @@
 package com.ahmed.busmanagement;
 
-import java.util.Queue;
+// source https://algs4.cs.princeton.edu/52trie/TST.java.html
 
-// source https://algs4.cs.princeton.edu/lectures/
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.*;
 
 public class TernarySearchTree<Value> {
+
+    private HashMap<String, String> map;
     private int n;              // size
     private Node<Value> root;   // root of TST
 
     private static class Node<Value> {
         private char c;                        // character
         private Node<Value> left, mid, right;  // left, middle, and right subtries
-        private Value val;                     // value associated with string
+        private String val;                     // value associated with string
     }
 
     /**
@@ -49,7 +53,7 @@ public class TernarySearchTree<Value> {
      *     and {@code null} if the key is not in the symbol table
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
-    public Value get(String key) {
+    public String get(String key) {
         if (key == null) {
             throw new IllegalArgumentException("calls get() with null argument");
         }
@@ -62,12 +66,17 @@ public class TernarySearchTree<Value> {
     // return subtrie corresponding to given key
     private Node<Value> get(Node<Value> x, String key, int d) {
         if (x == null) return null;
-        if (key.length() == 0) throw new IllegalArgumentException("key must have length >= 1");
+        if (key.length() == 0)
+            throw new IllegalArgumentException("key must have length >= 1");
         char c = key.charAt(d);
-        if      (c < x.c)              return get(x.left,  key, d);
-        else if (c > x.c)              return get(x.right, key, d);
-        else if (d < key.length() - 1) return get(x.mid,   key, d+1);
-        else                           return x;
+        if (c < x.c)
+            return get(x.left,  key, d);
+        else if (c > x.c)
+            return get(x.right, key, d);
+        else if (d < key.length() - 1)
+            return get(x.mid,   key, d+1);
+        else
+            return x;
     }
 
     /**
@@ -78,7 +87,7 @@ public class TernarySearchTree<Value> {
      * @param val the value
      * @throws IllegalArgumentException if {@code key} is {@code null}
      */
-    public void put(String key, Value val) {
+    public void put(String key, String val) {
         if (key == null) {
             throw new IllegalArgumentException("calls put() with null key");
         }
@@ -87,16 +96,20 @@ public class TernarySearchTree<Value> {
         root = put(root, key, val, 0);
     }
 
-    private Node<Value> put(Node<Value> x, String key, Value val, int d) {
+    private Node<Value> put(Node<Value> x, String key, String val, int d) {
         char c = key.charAt(d);
         if (x == null) {
             x = new Node<Value>();
             x.c = c;
         }
-        if      (c < x.c)               x.left  = put(x.left,  key, val, d);
-        else if (c > x.c)               x.right = put(x.right, key, val, d);
-        else if (d < key.length() - 1)  x.mid   = put(x.mid,   key, val, d+1);
-        else                            x.val   = val;
+        if (c < x.c)
+            x.left  = put(x.left,  key, val, d);
+        else if (c > x.c)
+            x.right = put(x.right, key, val, d);
+        else if (d < key.length() - 1)
+            x.mid   = put(x.mid,   key, val, d+1);
+        else
+            x.val   = val;
         return x;
     }
 
@@ -118,12 +131,14 @@ public class TernarySearchTree<Value> {
         int i = 0;
         while (x != null && i < query.length()) {
             char c = query.charAt(i);
-            if      (c < x.c) x = x.left;
-            else if (c > x.c) x = x.right;
+            if
+            (c < x.c) x = x.left;
+            else if
+            (c > x.c) x = x.right;
             else {
-                i++;
-                if (x.val != null) length = i;
-                x = x.mid;
+                    i++;
+                    if (x.val != null) length = i;
+                    x = x.mid;
             }
         }
         return query.substring(0, length);
@@ -154,8 +169,10 @@ public class TernarySearchTree<Value> {
         }
         Queue<String> queue = new Queue<String>();
         Node<Value> x = get(root, prefix, 0);
-        if (x == null) return queue;
-        if (x.val != null) queue.enqueue(prefix);
+        if (x == null)
+            return queue;
+        if (x.val != null)
+            queue.enqueue(prefix);
         collect(x.mid, new StringBuilder(prefix), queue);
         return queue;
     }
@@ -164,7 +181,9 @@ public class TernarySearchTree<Value> {
     private void collect(Node<Value> x, StringBuilder prefix, Queue<String> queue) {
         if (x == null) return;
         collect(x.left,  prefix, queue);
-        if (x.val != null) queue.enqueue(prefix.toString() + x.c);
+        if (x.val != null) {
+            queue.enqueue(prefix.toString() + x.c);
+        }
         collect(x.mid,   prefix.append(x.c), queue);
         prefix.deleteCharAt(prefix.length() - 1);
         collect(x.right, prefix, queue);
@@ -187,9 +206,11 @@ public class TernarySearchTree<Value> {
     private void collect(Node<Value> x, StringBuilder prefix, int i, String pattern, Queue<String> queue) {
         if (x == null) return;
         char c = pattern.charAt(i);
-        if (c == '.' || c < x.c) collect(x.left, prefix, i, pattern, queue);
+        if (c == '.' || c < x.c)
+            collect(x.left, prefix, i, pattern, queue);
         if (c == '.' || c == x.c) {
-            if (i == pattern.length() - 1 && x.val != null) queue.enqueue(prefix.toString() + x.c);
+            if (i == pattern.length() - 1 && x.val != null)
+                queue.enqueue(prefix.toString() + x.c);
             if (i < pattern.length() - 1) {
                 collect(x.mid, prefix.append(x.c), i+1, pattern, queue);
                 prefix.deleteCharAt(prefix.length() - 1);
@@ -198,45 +219,84 @@ public class TernarySearchTree<Value> {
         if (c == '.' || c > x.c) collect(x.right, prefix, i, pattern, queue);
     }
 
-
-    /**
-     * Unit tests the {@code TST} data type.
-     *
-     * @param args the command-line arguments
-     */
-    public static void main(String[] args) {
-
-        // build symbol table from standard input
-        TST<Integer> st = new TST<Integer>();
-        for (int i = 0; !StdIn.isEmpty(); i++) {
-            String key = StdIn.readString();
-            st.put(key, i);
+    public List<String> busStopDetails(String input) {
+        List<String> stopsList = new LinkedList<>();
+        Iterator<String> iterator = this.keysWithPrefix(input).iterator();
+        while (iterator.hasNext()) {
+            String info = iterator.next();
+            stopsList.add(map.get(this.get(info)));
         }
-
-        // print results
-        if (st.size() < 100) {
-            StdOut.println("keys(\"\"):");
-            for (String key : st.keys()) {
-                StdOut.println(key + " " + st.get(key));
-            }
-            StdOut.println();
+        if (!stopsList.isEmpty()) {
+            return stopsList;
         }
-
-        StdOut.println("longestPrefixOf(\"shellsort\"):");
-        StdOut.println(st.longestPrefixOf("shellsort"));
-        StdOut.println();
-
-        StdOut.println("longestPrefixOf(\"shell\"):");
-        StdOut.println(st.longestPrefixOf("shell"));
-        StdOut.println();
-
-        StdOut.println("keysWithPrefix(\"shor\"):");
-        for (String s : st.keysWithPrefix("shor"))
-            StdOut.println(s);
-        StdOut.println();
-
-        StdOut.println("keysThatMatch(\".he.l.\"):");
-        for (String s : st.keysThatMatch(".he.l."))
-            StdOut.println(s);
+        stopsList.add("stop does not exist\n");
+        return stopsList;
     }
+
+
+
+    public TernarySearchTree(String filename) {
+        File file = new File(filename);
+        Scanner sc = null;
+        try {
+            sc = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        assert sc != null;
+        sc.nextLine();
+        map = new HashMap<String, String>();
+
+        while (sc.hasNextLine()) {
+            String all_line = sc.nextLine();
+            String[] arr = all_line.split(",");
+            String stopID = arr[0];
+            StringBuilder s = new StringBuilder();
+            s.append(arr[2]);
+            if ("fs".equals(s.substring(0, 8))) {
+                String dir = s.substring(0, 11);
+                s.delete(0, 12);
+                s.append(" ").append(dir);
+            }
+            if (s.substring(0, 2).equals("nb") || s.substring(0, 2).equals("sb")
+                    || s.substring(0, 2).equals("wb") || s.substring(0, 2).equals("eb")) {
+                    String dir = s.substring(0, 2);
+                    s.delete(0, 3);
+                    s.append(" ").append(dir);
+            }
+            String stopName = s.toString();
+            this.put(stopName, stopID);
+
+            StringBuilder sDetails = new StringBuilder();
+            List<StringBuilder> asList = Arrays.asList(sDetails.append(" stop_id: ").append(stopID), sDetails.append(" stop_code: ").append(arr[1]),
+                    sDetails.append(" stop_name: ").append(stopName), sDetails.append(" stop_desc: ").append(arr[3]),
+                    sDetails.append(" stop_lat: ").append(arr[4]), sDetails.append(" stop_lon: ").append(arr[5]),
+                    sDetails.append(" zone_id: ").append(arr[6]), sDetails.append(" location_type: ").append(arr[8]));
+            for (StringBuilder stringBuilder : asList) {
+                stringBuilder.append(" ");
+            }
+            String stopInformation = sDetails.toString();
+            map.put(stopID, stopInformation);
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+
+

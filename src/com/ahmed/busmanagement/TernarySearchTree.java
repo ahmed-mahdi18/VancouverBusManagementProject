@@ -18,13 +18,6 @@ public class TernarySearchTree<Value> {
         private String val;
     }
 
-    /**
-     * Initializes an empty string symbol table.
-     */
-    public TernarySearchTree() {
-    }
-
-
     public TernarySearchTree(String filename) {
         File file = new File(filename);
         Scanner sc = null;
@@ -84,13 +77,9 @@ public class TernarySearchTree<Value> {
         return stopsList;
     }
 
-
-
-
     public int size() {
         return n;
     }
-
 
     public boolean contains(String key) {
         if (key == null) {
@@ -153,7 +142,6 @@ public class TernarySearchTree<Value> {
         return x;
     }
 
-
     public String longestPrefixOf(String query) {
         if (query == null) {
             throw new IllegalArgumentException("calls longestPrefixOf() with null argument");
@@ -177,13 +165,11 @@ public class TernarySearchTree<Value> {
         return query.substring(0, length);
     }
 
-
     public Iterable<String> keys() {
         Queue<String> queue = new Queue<String>();
         collect(root, new StringBuilder(), queue);
         return queue;
     }
-
 
     public Iterable<String> keysWithPrefix(String prefix) {
         if (prefix == null) {
@@ -211,7 +197,6 @@ public class TernarySearchTree<Value> {
     }
 
 
-
     public Iterable<String> keysThatMatch(String pattern) {
         Queue<String> queue = new Queue<String>();
         collect(root, new StringBuilder(), 0, pattern, queue);
@@ -233,11 +218,6 @@ public class TernarySearchTree<Value> {
         }
         if (c == '.' || c > x.c) collect(x.right, prefix, i, pattern, queue);
     }
-
-
-
-
-
 }
 
 

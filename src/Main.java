@@ -19,20 +19,53 @@ public class Main {
             input.nextLine();
             if (selected == 0) {
                 System.out.println("thank you!");
-                System.exit(0);
+                input.close();
             }
-            if (selected >= 0 && selected <= 3) {
-                    if (selected == 1) {
+            if (selected < 0 && selected > 3) {
+                System.out.println("please enter a valid number");
+            }else if (selected == 1) {
                     System.out.print("enter the bus stop's full name or by the first few letters in its name: ");
                     String inputByUser = input.nextLine();
-                    tst.busStopDetails(inputByUser.toUpperCase()).forEach((info) -> {
-                        System.out.println(info);
-                    });
+                    tst.busStopDetails(inputByUser.toUpperCase()).forEach((info) -> { System.out.println(info); });
                 }
             }
-                System.out.println("");
-
         }
 
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
+

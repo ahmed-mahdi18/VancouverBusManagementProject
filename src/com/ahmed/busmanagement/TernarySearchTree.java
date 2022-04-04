@@ -107,9 +107,9 @@ public class TernarySearchTree<Value> {
         else if (c > x.c)
             x.right = put(x.right, key, val, d);
         else if (d < key.length() - 1)
-            x.mid   = put(x.mid,   key, val, d+1);
+            x.mid = put(x.mid,   key, val, d+1);
         else
-            x.val   = val;
+            x.val = val;
         return x;
     }
 
@@ -229,7 +229,7 @@ public class TernarySearchTree<Value> {
         if (!stopsList.isEmpty()) {
             return stopsList;
         }
-        stopsList.add("stop does not exist\n");
+        stopsList.add("stop is not valid\n");
         return stopsList;
     }
 
@@ -243,7 +243,6 @@ public class TernarySearchTree<Value> {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        assert sc != null;
         sc.nextLine();
         map = new HashMap<String, String>();
 
@@ -254,15 +253,14 @@ public class TernarySearchTree<Value> {
             StringBuilder s = new StringBuilder();
             s.append(arr[2]);
             if ("fs".equals(s.substring(0, 8))) {
-                String dir = s.substring(0, 11);
+                String direct = s.substring(0, 11);
                 s.delete(0, 12);
-                s.append(" ").append(dir);
-            }
-            if (s.substring(0, 2).equals("nb") || s.substring(0, 2).equals("sb")
+                s.append(" ").append(direct);
+            } else if (s.substring(0, 2).equals("nb") || s.substring(0, 2).equals("sb")
                     || s.substring(0, 2).equals("wb") || s.substring(0, 2).equals("eb")) {
-                    String dir = s.substring(0, 2);
+                    String st  = s.substring(0, 2);
                     s.delete(0, 3);
-                    s.append(" ").append(dir);
+                    s.append(" ").append(st);
             }
             String stopName = s.toString();
             this.put(stopName, stopID);

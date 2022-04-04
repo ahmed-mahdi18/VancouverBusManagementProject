@@ -1,3 +1,4 @@
+import com.ahmed.busmanagement.ArrivalTimeSearch;
 import com.ahmed.busmanagement.TernarySearchTree;
 
 import java.util.Scanner;
@@ -26,9 +27,9 @@ public class Main {
             }else if (selected == 1) {
                     System.out.print("enter the bus stop's full name or by the first few letters in its name: ");
                     String inputByUser = input.nextLine();
-                    tst.busStopDetails(inputByUser.toUpperCase()).forEach((info) -> { System.out.println(info); });
+                    tst.busStopDetails(inputByUser.toUpperCase()).forEach(System.out::println);
                 }
-            }
+        }
         }
 
 

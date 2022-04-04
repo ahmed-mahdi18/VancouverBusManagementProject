@@ -8,14 +8,14 @@ import java.util.*;
 
 public class TernarySearchTree<Value> {
 
-    private HashMap<String, String> map;
-    private int n;              // size
-    private Node<Value> root;   // root of TST
+    private HashMap<String, String> map = new HashMap<>();
+    private int n;
+    private Node<Value> root;
 
     private static class Node<Value> {
-        private char c;                        // character
-        private Node<Value> left, mid, right;  // left, middle, and right subtries
-        private String val;                     // value associated with string
+        private char c;
+        private Node<Value> left, mid, right;
+        private String val;
     }
 
     /**
@@ -24,21 +24,74 @@ public class TernarySearchTree<Value> {
     public TernarySearchTree() {
     }
 
-    /**
-     * Returns the number of key-value pairs in this symbol table.
-     * @return the number of key-value pairs in this symbol table
-     */
+
+    public TernarySearchTree(String filename) {
+        File file = new File(filename);
+        Scanner sc = null;
+        try {
+            sc = new Scanner(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (sc == null) throw new AssertionError();
+        sc.nextLine();
+        map = new HashMap<>();
+
+        while (sc.hasNextLine()) {
+            String all_line = sc.nextLine();
+            String[] arr = all_line.split(",");
+            String stopID = arr[0];
+            StringBuilder s = new StringBuilder();
+            s.append(arr[2]);
+            if (s.substring(0, 2).equals("NB") || s.substring(0, 2).equals("SB") || s.substring(0, 2).equals("WB")
+                    || s.substring(0, 2).equals("EB")) {
+                String st  = s.substring(0, 2);
+                s.delete(0, 3);
+                s.append(" ").append(st);
+            } else if ((s.substring(0, 8).equals("fs"))) {
+                String direct = s.substring(0, 11);
+                s.delete(0, 12);
+                s.append(" ").append(direct);
+            }
+            String stopName = s.toString();
+            this.put(stopName, stopID);
+
+            StringBuilder sDetails = new StringBuilder();
+            List<StringBuilder> asList = Arrays.asList(sDetails.append(" STOP_ID: ").append(stopID), sDetails.append(" STOP_CODE: ").append(arr[1]),
+                    sDetails.append(" STOP_NAME: ").append(stopName), sDetails.append(" STOP_DESC: ").append(arr[3]),
+                    sDetails.append(" STOP_LAT: ").append(arr[4]), sDetails.append(" STOP_LON: ").append(arr[5]),
+                    sDetails.append(" ZONE_ID: ").append(arr[6]), sDetails.append(" STOP_URL").append(arr[7]), sDetails.append(" LOCATION_TYPE: ").append(arr[8]));
+            for (StringBuilder stringBuilder : asList) {
+                stringBuilder.append(" ");
+            }
+            String stopInformation = sDetails.toString();
+            map.put(stopID, stopInformation);
+
+        }
+    }
+
+    public List<String> busStopDetails(String input) {
+        List<String> stopsList = new LinkedList<>();
+        Iterator<String> iterator = this.keysWithPrefix(input).iterator();
+        while (iterator.hasNext()) {
+            String info = iterator.next();
+            stopsList.add(map.get(this.get(info)));
+        }
+        if (!stopsList.isEmpty()) {
+            return stopsList;
+        }
+        stopsList.add("stop is not valid\n");
+        return stopsList;
+    }
+
+
+
+
     public int size() {
         return n;
     }
 
-    /**
-     * Does this symbol table contain the given key?
-     * @param key the key
-     * @return {@code true} if this symbol table contains {@code key} and
-     *     {@code false} otherwise
-     * @throws IllegalArgumentException if {@code key} is {@code null}
-     */
+
     public boolean contains(String key) {
         if (key == null) {
             throw new IllegalArgumentException("argument to contains() is null");
@@ -46,13 +99,7 @@ public class TernarySearchTree<Value> {
         return get(key) != null;
     }
 
-    /**
-     * Returns the value associated with the given key.
-     * @param key the key
-     * @return the value associated with the given key if the key is in the symbol table
-     *     and {@code null} if the key is not in the symbol table
-     * @throws IllegalArgumentException if {@code key} is {@code null}
-     */
+
     public String get(String key) {
         if (key == null) {
             throw new IllegalArgumentException("calls get() with null argument");
@@ -63,7 +110,7 @@ public class TernarySearchTree<Value> {
         return x.val;
     }
 
-    // return subtrie corresponding to given key
+
     private Node<Value> get(Node<Value> x, String key, int d) {
         if (x == null) return null;
         if (key.length() == 0)
@@ -79,14 +126,7 @@ public class TernarySearchTree<Value> {
             return x;
     }
 
-    /**
-     * Inserts the key-value pair into the symbol table, overwriting the old value
-     * with the new value if the key is already in the symbol table.
-     * If the value is {@code null}, this effectively deletes the key from the symbol table.
-     * @param key the key
-     * @param val the value
-     * @throws IllegalArgumentException if {@code key} is {@code null}
-     */
+
     public void put(String key, String val) {
         if (key == null) {
             throw new IllegalArgumentException("calls put() with null key");
@@ -113,14 +153,7 @@ public class TernarySearchTree<Value> {
         return x;
     }
 
-    /**
-     * Returns the string in the symbol table that is the longest prefix of {@code query},
-     * or {@code null}, if no such string.
-     * @param query the query string
-     * @return the string in the symbol table that is the longest prefix of {@code query},
-     *     or {@code null} if no such string
-     * @throws IllegalArgumentException if {@code query} is {@code null}
-     */
+
     public String longestPrefixOf(String query) {
         if (query == null) {
             throw new IllegalArgumentException("calls longestPrefixOf() with null argument");
@@ -144,25 +177,14 @@ public class TernarySearchTree<Value> {
         return query.substring(0, length);
     }
 
-    /**
-     * Returns all keys in the symbol table as an {@code Iterable}.
-     * To iterate over all of the keys in the symbol table named {@code st},
-     * use the foreach notation: {@code for (Key key : st.keys())}.
-     * @return all keys in the symbol table as an {@code Iterable}
-     */
+
     public Iterable<String> keys() {
         Queue<String> queue = new Queue<String>();
         collect(root, new StringBuilder(), queue);
         return queue;
     }
 
-    /**
-     * Returns all of the keys in the set that start with {@code prefix}.
-     * @param prefix the prefix
-     * @return all of the keys in the set that start with {@code prefix},
-     *     as an iterable
-     * @throws IllegalArgumentException if {@code prefix} is {@code null}
-     */
+
     public Iterable<String> keysWithPrefix(String prefix) {
         if (prefix == null) {
             throw new IllegalArgumentException("calls keysWithPrefix() with null argument");
@@ -177,7 +199,6 @@ public class TernarySearchTree<Value> {
         return queue;
     }
 
-    // all keys in subtrie rooted at x with given prefix
     private void collect(Node<Value> x, StringBuilder prefix, Queue<String> queue) {
         if (x == null) return;
         collect(x.left,  prefix, queue);
@@ -190,13 +211,7 @@ public class TernarySearchTree<Value> {
     }
 
 
-    /**
-     * Returns all of the keys in the symbol table that match {@code pattern},
-     * where the character '.' is interpreted as a wildcard character.
-     * @param pattern the pattern
-     * @return all of the keys in the symbol table that match {@code pattern},
-     *     as an iterable, where . is treated as a wildcard character.
-     */
+
     public Iterable<String> keysThatMatch(String pattern) {
         Queue<String> queue = new Queue<String>();
         collect(root, new StringBuilder(), 0, pattern, queue);
@@ -219,65 +234,9 @@ public class TernarySearchTree<Value> {
         if (c == '.' || c > x.c) collect(x.right, prefix, i, pattern, queue);
     }
 
-    public List<String> busStopDetails(String input) {
-        List<String> stopsList = new LinkedList<>();
-        Iterator<String> iterator = this.keysWithPrefix(input).iterator();
-        while (iterator.hasNext()) {
-            String info = iterator.next();
-            stopsList.add(map.get(this.get(info)));
-        }
-        if (!stopsList.isEmpty()) {
-            return stopsList;
-        }
-        stopsList.add("stop is not valid\n");
-        return stopsList;
-    }
 
 
 
-    public TernarySearchTree(String filename) {
-        File file = new File(filename);
-        Scanner sc = null;
-        try {
-            sc = new Scanner(file);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        sc.nextLine();
-        map = new HashMap<String, String>();
-
-        while (sc.hasNextLine()) {
-            String all_line = sc.nextLine();
-            String[] arr = all_line.split(",");
-            String stopID = arr[0];
-            StringBuilder s = new StringBuilder();
-            s.append(arr[2]);
-            if ("fs".equals(s.substring(0, 8))) {
-                String direct = s.substring(0, 11);
-                s.delete(0, 12);
-                s.append(" ").append(direct);
-            } else if (s.substring(0, 2).equals("nb") || s.substring(0, 2).equals("sb")
-                    || s.substring(0, 2).equals("wb") || s.substring(0, 2).equals("eb")) {
-                    String st  = s.substring(0, 2);
-                    s.delete(0, 3);
-                    s.append(" ").append(st);
-            }
-            String stopName = s.toString();
-            this.put(stopName, stopID);
-
-            StringBuilder sDetails = new StringBuilder();
-            List<StringBuilder> asList = Arrays.asList(sDetails.append(" stop_id: ").append(stopID), sDetails.append(" stop_code: ").append(arr[1]),
-                    sDetails.append(" stop_name: ").append(stopName), sDetails.append(" stop_desc: ").append(arr[3]),
-                    sDetails.append(" stop_lat: ").append(arr[4]), sDetails.append(" stop_lon: ").append(arr[5]),
-                    sDetails.append(" zone_id: ").append(arr[6]), sDetails.append(" location_type: ").append(arr[8]));
-            for (StringBuilder stringBuilder : asList) {
-                stringBuilder.append(" ");
-            }
-            String stopInformation = sDetails.toString();
-            map.put(stopID, stopInformation);
-
-        }
-    }
 
 }
 

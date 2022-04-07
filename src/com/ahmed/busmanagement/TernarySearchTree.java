@@ -21,6 +21,7 @@ public class TernarySearchTree<Value> {
     public TernarySearchTree(String filename) {
         File file = new File(filename);
         Scanner sc = null;
+        map = new HashMap<>();
         try {
             sc = new Scanner(file);
         } catch (FileNotFoundException e) {
@@ -28,8 +29,6 @@ public class TernarySearchTree<Value> {
         }
         if (sc == null) throw new AssertionError();
         sc.nextLine();
-        map = new HashMap<>();
-
         while (sc.hasNextLine()) {
             String all_line = sc.nextLine();
             String[] arr = all_line.split(",");
@@ -41,7 +40,7 @@ public class TernarySearchTree<Value> {
                 String st  = s.substring(0, 2);
                 s.delete(0, 3);
                 s.append(" ").append(st);
-            } else if ((s.substring(0, 8).equals("fs"))) {
+            } else if ((s.substring(0, 8).equals("FS"))) {
                 String direct = s.substring(0, 11);
                 s.delete(0, 12);
                 s.append(" ").append(direct);
@@ -50,12 +49,21 @@ public class TernarySearchTree<Value> {
             this.put(stopName, stopID);
 
             StringBuilder sDetails = new StringBuilder();
-            List<StringBuilder> asList = Arrays.asList(sDetails.append(" STOP_ID: ").append(stopID), sDetails.append(" STOP_CODE: ").append(arr[1]),
-                    sDetails.append(" STOP_NAME: ").append(stopName), sDetails.append(" STOP_DESC: ").append(arr[3]),
-                    sDetails.append(" STOP_LAT: ").append(arr[4]), sDetails.append(" STOP_LON: ").append(arr[5]),
-                    sDetails.append(" ZONE_ID: ").append(arr[6]), sDetails.append(" STOP_URL").append(arr[7]), sDetails.append(" LOCATION_TYPE: ").append(arr[8]));
-            for (StringBuilder stringBuilder : asList) {
+            List<StringBuilder> asList;
+            asList = Arrays.asList(sDetails.append(" STOP ID: ").append(stopID) ,
+                    sDetails.append(" STOP CODE: ").append(arr[1]),
+                    sDetails.append(" STOP NAME: ").append(stopName),
+                    sDetails.append(" STOP DESC: ").append(arr[3]),
+                    sDetails.append(" STOP LAT: ").append(arr[4]),
+                    sDetails.append(" STOP LON: ").append(arr[5]),
+                    sDetails.append(" ZONE ID: ").append(arr[6]),
+                    sDetails.append(" STOP URL").append(arr[7]),
+                    sDetails.append(" LOCATION TYPE: ").append(arr[8]));
+            int i = 0, asListSize = asList.size();
+            while (i < asListSize) {
+                StringBuilder stringBuilder = asList.get(i);
                 stringBuilder.append(" ");
+                i++;
             }
             String stopInformation = sDetails.toString();
             map.put(stopID, stopInformation);
@@ -73,7 +81,7 @@ public class TernarySearchTree<Value> {
         if (!stopsList.isEmpty()) {
             return stopsList;
         }
-        stopsList.add("stop is not valid\n");
+        stopsList.add("Stop is Invalid!, Try Again");
         return stopsList;
     }
 

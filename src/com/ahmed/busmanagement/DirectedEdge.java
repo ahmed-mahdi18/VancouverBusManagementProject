@@ -3,9 +3,9 @@ package com.ahmed.busmanagement;
 // source https://algs4.cs.princeton.edu/44sp/DirectedEdge.java.html
 public class DirectedEdge {
 
-    private  int source;
-    private  int destination;
-    private  double weight;
+    public int source;
+    public  int destination;
+    public  double weight;
 
     public DirectedEdge(int source, int destination, double weight) {
         if (source < 0) throw new IllegalArgumentException("Vertex names must be non-negative integers");

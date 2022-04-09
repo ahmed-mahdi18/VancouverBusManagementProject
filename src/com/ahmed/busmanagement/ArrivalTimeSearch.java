@@ -25,10 +25,13 @@ public class ArrivalTimeSearch {
     public static void PrintTimes(ArrayList<String> l) {
 
         l.sort(Comparator.comparingInt(ArrivalTimeSearch::siftID));
-        System.out.println("these are the times");
-        for (int i = 0, listSize = l.size(); i < listSize; i++) {
+        System.out.println("These are the times Corresponding to the trip_id, arrival_time," +
+                " departure_time, stop_id, stop_sequence, stop_headsign, pickup_type, drop_off_type and shape_dist_traveled");
+        int i = 0, listSize = l.size();
+        while (i < listSize) {
             String string = l.get(i);
             System.out.println(string);
+            i++;
         }
     }
 

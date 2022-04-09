@@ -8,7 +8,7 @@ import java.util.*;
 
 public class TernarySearchTree<Value> {
 
-    private HashMap<String, String> map = new HashMap<>();
+    private HashMap<String, String> map;
     private int n;
     private Node<Value> root;
 
@@ -47,18 +47,13 @@ public class TernarySearchTree<Value> {
             }
             String stopName = s.toString();
             this.put(stopName, stopID);
-
             StringBuilder sDetails = new StringBuilder();
-            List<StringBuilder> asList;
-            asList = Arrays.asList(sDetails.append(" STOP ID: ").append(stopID) ,
-                    sDetails.append(" STOP CODE: ").append(arr[1]),
-                    sDetails.append(" STOP NAME: ").append(stopName),
-                    sDetails.append(" STOP DESC: ").append(arr[3]),
-                    sDetails.append(" STOP LAT: ").append(arr[4]),
-                    sDetails.append(" STOP LON: ").append(arr[5]),
-                    sDetails.append(" ZONE ID: ").append(arr[6]),
-                    sDetails.append(" STOP URL").append(arr[7]),
-                    sDetails.append(" LOCATION TYPE: ").append(arr[8]));
+            List<StringBuilder> asList = new ArrayList<>();
+            asList.add(sDetails.append(" STOP ID: ").append(stopID).append("\n").append(" STOP CODE: ").append(arr[1]).
+                    append("\n").append(" STOP NAME: ").append(stopName).append("\n").append(" STOP DESC: ").append(arr[3]).
+                    append("\n").append(" STOP LAT: ").append(arr[4]).append("\n").append(" STOP LON: ").append(arr[5]).append("\n").
+                    append(" ZONE ID: ").append(arr[6]).append("\n").append(" LOCATION TYPE: ").append(arr[8]).append("\n").
+                    append("--------------------------------------------------------"));
             int i = 0, asListSize = asList.size();
             while (i < asListSize) {
                 StringBuilder stringBuilder = asList.get(i);

@@ -16,7 +16,7 @@ public class Main {
         File f = new File("./resources/stop_times.txt");
         JOptionPane.showMessageDialog(null, "Hello welcome to the Vancouver Bus Management App developed " +
                 "to make finding your bus and what times the buses come easier! ");
-        System.out.println("System loading......");
+        System.err.println("System loading......");
         boolean finished = false;
         int destination = 0;
         int source;
@@ -116,7 +116,7 @@ public class Main {
                             System.out.print("Enter the stop you want to arrive at: ");
                             try {
                                 destination = input.nextInt();
-                            } catch (InputMismatchException ex) {
+                            } catch (InputMismatchException e) {
                                 System.out.println("Incorrect input, try again");
                                 destination = 0;
                                 ID = false;
@@ -132,13 +132,13 @@ public class Main {
                             }
                         }
                         if (ID) {
-                            if (Between2Stops.weight == -1) {
-                                System.err.println("Path does not exist\n");
-                            } else {
+                            if (Between2Stops.weight != -1) {
                                 String route = sh.shortestPath(destination, source);
                                 System.out.println("the Weight is : " + Between2Stops.weight);
                                 System.out.println("the route you will be taking will be : " + route);
                                 System.out.print("select one of the above options by number 1,2,3 or 0 to exit : ");
+                            } else {
+                                System.err.println("Path does not exist\n");
                             }
                         }
                         if (!ID) {

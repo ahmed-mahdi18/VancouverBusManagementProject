@@ -1,9 +1,28 @@
-1. Shortest Paths
+CSU22012: Data Structures and Algorithms Design Document
 
-2. Sorting
+1. Shortest paths
+The project specification asked us to find the shortest path between two bus stops and in doing so gave me a lot of thought into which one to choose, I had to look at which shortest path is the most efficient and most optimal in its use for this project. The options were Dijkstra, Floyd Warshall and Bellman Ford.
+Firstly I will introduce the algorithms briefly and then discuss which one I chose and why I chose it.
+Dijkstra is a greedy algorithm used to find the shortest path between two nodes, in our case it was 2 bus stops.
+We give a source node and have two sets where one contains the vertices in the graph and the other set includes vertices that are not in the graph yet, and at each iteration we find a vertex that is in the set of vertices not in the graph that has the smallest distance from the source vertex.
+Dijkstra has a running time of O (n log n) where n is the number of vertices in the graph. Floyd Warshall algorithm  is of the dynamic programming family
+which uses a 2D array and finds all the shortest paths between all the vertices in the graph, it works for both directed and undirected graphs and has a running time of O(n^3). Lastly Bellman Ford algorithm works by enhancing the weight of the paths from the source vertex to the rest of the vertices. It handles negative numbers which relaxes the paths. It has a running time of O (m n) where m is the number of edges in the graph.
+I chose Dijkstra algorithm because it has a much better running and space complexity than the other algorithms and Floyd Warshall figures out the path from
+one stop to every other stop which i do not need to find out. I just need the quickest route from one stop to another.
+I chose Dijkstra over Bellman Ford is because the algorithm handles negative edges and because we are working with real routes and can’t have negative routes, I chose Dijkstra algorithm.
 
 
-3. Ternary search Tree
+2. Ternary Search tree
+The second part of the project was for the user to be able to input the name of the stop or the first few letters in its name and get all the stops with that name.
+to do this task I used a ternary search tree, ternary search trees are very efficient when it comes to their space complexity.
+They are very useful in storing large data of words and manipulating that data in any way you want, in our case we had to manipulate the bus stops names and put the
+“WB” and “NB” etc.  at the start of the stop names to the end. Ternary search tree makes this task a lot easier.
 
 
-4. User interface
+
+3. Sorting
+Finally the last task we had to do for this project was to let the user search for an arrival time and then print out all trips associated with that arrival time.
+I used quick sort to sort the trip ids. I used the .sort command built in into the JDK which by default uses a quick sort.
+To read in all the lines I stored it into an array list data structure and read them in using File reader with the .readAlllines command.
+4. User Interface
+For all this to work as intended we were asked to do a user interface with error handling, I used a switch case statement with a lot of if and else statements inside it.

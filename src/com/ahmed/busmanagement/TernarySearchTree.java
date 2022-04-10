@@ -77,7 +77,6 @@ public class TernarySearchTree<Value> {
             return stopsList;
         }
         stopsList.add("Stop is Invalid!, Try Again");
-        System.out.println("Enter the bus stop's full name or by the first few letters in the name: ");
         return stopsList;
     }
 

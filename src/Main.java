@@ -132,13 +132,13 @@ public class Main {
                             }
                         }
                         if (ID) {
-                            if (Between2Stops.weight != -1) {
+                            if (Between2Stops.weight == -1) {
+                                System.err.println("Path does not exist\n");
+                            } else {
                                 String route = sh.shortestPath(destination, source);
                                 System.out.println("the Weight is : " + Between2Stops.weight);
                                 System.out.println("the route you will be taking will be : " + route);
                                 System.out.print("select one of the above options by number 1,2,3 or 0 to exit : ");
-                            } else {
-                                System.err.println("Path does not exist\n");
                             }
                         }
                         if (!ID) {
